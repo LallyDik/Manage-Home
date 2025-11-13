@@ -3,16 +3,58 @@ class BudgetManager {
     constructor() {
         this.currentDate = new Date();
         this.currentMonth = this.formatMonth(this.currentDate);
-        this.data = this.loadData();
+        this.data = { incomes: [], expenses: [] };
         this.currentItemType = null; // 'income' or 'expense'
-        this.currentEditingItem = null; // פריט שנערך כרגע
-        this.tempSubItems = []; // תתי-פריטים זמניים
-        this.init();
+        this.currentUser = null;
+        this.unsubscribeFromData = null;
+        this.checkAuth();
+    }
+
+    async checkAuth() {
+        // בדוק אם המשתמש מחובר
+        FirebaseAuth.onAuthStateChanged(async (user) => {
+            if (user) {
+                this.currentUser = user;
+                await this.loadData();
+                this.init();
+                this.setupRealtimeSync();
+            } else {
+                // אם אין משתמש מחובר, העבר לדף התחברות
+                window.location.href = 'auth.html';
+            }
+        });
     }
 
     init() {
         this.setupEventListeners();
         this.updateDisplay();
+        this.updateUserInfo();
+    }
+
+    updateUserInfo() {
+        // הצג מידע על המשתמש המחובר
+        if (this.currentUser) {
+            const email = this.currentUser.email;
+            const userInfoEl = document.getElementById('userEmail');
+            if (userInfoEl) {
+                userInfoEl.textContent = email;
+            }
+        }
+    }
+
+    setupRealtimeSync() {
+        // האזן לשינויים בזמן אמת
+        if (this.currentUser) {
+            this.unsubscribeFromData = FirebaseDB.onUserDataChanged(
+                this.currentUser.uid,
+                (data) => {
+                    if (data) {
+                        this.data = data;
+                        this.updateDisplay();
+                    }
+                }
+            );
+        }
     }
 
     formatMonth(date) {
@@ -331,7 +373,32 @@ class BudgetManager {
         }
     }
 
-    loadData() {
+    async loadData() {
+        if (!this.currentUser) return;
+
+        const result = await FirebaseDB.loadUserData(this.currentUser.uid);
+        if (result.success && result.data) {
+            this.data = result.data;
+        } else {
+            // אם אין נתונים, נסה לטעון מ-localStorage (מיגרציה)
+            const localData = this.loadFromLocalStorage();
+            if (localData) {
+                this.data = localData;
+                // שמור ב-Firestore
+                await this.saveData();
+                // נקה localStorage
+                localStorage.removeItem('budgetData');
+            } else {
+                this.data = {
+                    incomes: [],
+                    expenses: []
+                };
+            }
+        }
+    }
+
+    loadFromLocalStorage() {
+        // טעינה מ-localStorage למיגרציה
         const savedData = localStorage.getItem('budgetData');
         if (savedData) {
             const data = JSON.parse(savedData);
@@ -359,14 +426,30 @@ class BudgetManager {
 
             return data;
         }
-        return {
-            incomes: [],
-            expenses: []
-        };
+        return null;
     }
 
-    saveData() {
-        localStorage.setItem('budgetData', JSON.stringify(this.data));
+    async saveData() {
+        if (!this.currentUser) return;
+
+        const result = await FirebaseDB.saveUserData(this.currentUser.uid, this.data);
+        if (!result.success) {
+            console.error('Failed to save data:', result.error);
+            alert('שגיאה בשמירת הנתונים. נסה שוב.');
+        }
+    }
+
+    async logout() {
+        // נתק את ההאזנה לשינויים
+        if (this.unsubscribeFromData) {
+            this.unsubscribeFromData();
+        }
+
+        // התנתק
+        const result = await FirebaseAuth.signOut();
+        if (result.success) {
+            window.location.href = 'auth.html';
+        }
     }
 
     // ===== ניהול תתי-פריטים =====
