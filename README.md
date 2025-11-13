@@ -71,27 +71,98 @@ npx http-server
 
 ```
 Manage-Home/
-├── index.html      # מבנה הדף
-├── style.css       # עיצוב וסגנון
-├── app.js          # לוגיקה ופונקציונליות
-└── README.md       # התיעוד (קובץ זה)
+├── index.html           # דף האפליקציה הראשי
+├── auth.html            # דף התחברות והרשמה
+├── style.css            # עיצוב הדף הראשי
+├── auth.css             # עיצוב דף ההתחברות
+├── app.js               # לוגיקה ופונקציונליות ראשית
+├── firebase-config.js   # תצורת Firebase (יש לערוך!)
+└── README.md            # התיעוד (קובץ זה)
 ```
 
 ## 💾 שמירת נתונים
 
-- כל הנתונים נשמרים אוטומטית ב-localStorage של הדפדפן
-- הנתונים נשמרים באופן מקומי במחשב שלך
-- אין צורך בשרת או בחיבור לאינטרנט
-- הנתונים יישארו גם אחרי סגירת הדפדפן
+האפליקציה משתמשת ב-**Firebase** לאחסון נתונים בענן:
 
-**⚠️ שים לב:** אם תנקה את ה-cache של הדפדפן, הנתונים יימחקו. מומלץ לגבות את הנתונים מדי פעם.
+- **אחסון בענן** - הנתונים שלך נשמרים ב-Firestore Database
+- **גישה מכל מכשיר** - התחבר מכל מחשב או מכשיר ותראה את הנתונים שלך
+- **סנכרון בזמן אמת** - שינויים מתעדכנים אוטומטית בכל המכשירים המחוברים
+- **מאובטח** - כל משתמש רואה רק את הנתונים שלו
+- **אימות משתמשים** - התחברות מאובטחת עם אימייל/סיסמה או Google
+
+### 🔧 הגדרת Firebase (נדרש לפני השימוש)
+
+כדי להשתמש באפליקציה, עליך להגדיר פרויקט Firebase:
+
+#### שלב 1: יצירת פרויקט Firebase
+
+1. היכנס ל-[Firebase Console](https://console.firebase.google.com/)
+2. לחץ על "Add project" או "הוסף פרויקט"
+3. תן שם לפרויקט (לדוגמה: "budget-manager")
+4. המשך בשלבים עד ליצירת הפרויקט
+
+#### שלב 2: הפעלת Authentication
+
+1. בתפריט הצד, לחץ על "Authentication"
+2. לחץ על "Get started"
+3. בטאב "Sign-in method", הפעל:
+   - **Email/Password** - לחץ על "Enable" והפעל
+   - **Google** (אופציונלי) - לחץ על "Enable" והפעל
+
+#### שלב 3: יצירת Firestore Database
+
+1. בתפריט הצד, לחץ על "Firestore Database"
+2. לחץ על "Create database"
+3. בחר "Start in test mode" (למטרות פיתוח)
+4. בחר מיקום (לדוגמה: `europe-west`)
+5. לחץ על "Enable"
+
+⚠️ **חשוב:** לסביבת ייצור, עדכן את כללי האבטחה ל:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
+
+#### שלב 4: קבלת נתוני התצורה
+
+1. בדף הראשי של הפרויקט, לחץ על סימן ה-Web (</>) להוספת אפליקציית Web
+2. תן שם לאפליקציה (לדוגמה: "budget-app")
+3. העתק את נתוני ה-configuration שמוצגים
+4. פתח את הקובץ `firebase-config.js` בפרויקט
+5. החלף את הערכים הבאים בנתונים שלך:
+   ```javascript
+   const firebaseConfig = {
+       apiKey: "YOUR_API_KEY",              // החלף בערך שלך
+       authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+       projectId: "YOUR_PROJECT_ID",
+       storageBucket: "YOUR_PROJECT_ID.appspot.com",
+       messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+       appId: "YOUR_APP_ID"
+   };
+   ```
+
+#### שלב 5: הפעלת האפליקציה
+
+1. פתח את `auth.html` בדפדפן (דף ההתחברות)
+2. הירשם עם אימייל וסיסמה או התחבר עם Google
+3. תועבר אוטומטית לאפליקציה הראשית
+4. כעת אתה יכול להיכנס מכל מחשב עם אותו חשבון!
 
 ## 🔧 טכנולוגיות
 
 - HTML5
 - CSS3 (עם Flexbox, Animations, Gradients)
-- JavaScript (Vanilla JS - ללא ספריות חיצוניות)
-- localStorage API
+- JavaScript (Vanilla JS)
+- **Firebase Authentication** - אימות משתמשים
+- **Firebase Firestore** - מסד נתונים בענן
+- Real-time Database Sync
 
 ## 📱 תמיכה במכשירים
 
@@ -102,12 +173,14 @@ Manage-Home/
 
 ## 🎯 תכונות עתידיות (רעיונות)
 
+- ✅ ~~סנכרון בין מכשירים~~ (מיושם!)
+- ✅ ~~אימות משתמשים~~ (מיושם!)
 - ייצוא לקובץ Excel/PDF
 - גרפים וסטטיסטיקות
 - קטגוריות להכנסות והוצאות
 - תזכורות לתשלומים
-- סנכרון בין מכשירים
 - תמיכה במטבעות שונים
+- גיבוי ושחזור נתונים
 
 ## 🤝 תרומה לפרויקט
 

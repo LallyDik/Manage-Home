@@ -9,7 +9,13 @@
 <body>
     <div class="container">
         <header>
-            <h1>ניהול הכנסות והוצאות חודשי</h1>
+            <div class="header-top">
+                <h1>ניהול הכנסות והוצאות חודשי</h1>
+                <div class="user-info">
+                    <span id="userEmail" class="user-email"></span>
+                    <button id="logoutBtn" class="logout-btn">התנתק</button>
+                </div>
+            </div>
             <div class="month-selector">
                 <button id="prevMonth" class="nav-btn">◄</button>
                 <h2 id="currentMonth"></h2>
@@ -95,6 +101,31 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+
+    <!-- App Script -->
     <script src="app.js"></script>
+
+    <script>
+        // הוסף מאזין לכפתור ההתנתקות
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    if (confirm('האם אתה בטוח שברצונך להתנתק?')) {
+                        if (budgetManager) {
+                            await budgetManager.logout();
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
