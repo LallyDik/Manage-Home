@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול הכנסות והוצאות</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ניהול הכנסות והוצאות חודשי</h1>
+            <div class="month-selector">
+                <button id="prevMonth" class="nav-btn">◄</button>
+                <h2 id="currentMonth"></h2>
+                <button id="nextMonth" class="nav-btn">►</button>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- סעיף הכנסות -->
+            <section class="section income-section">
+                <div class="section-header">
+                    <h3>הכנסות</h3>
+                    <button id="addIncomeBtn" class="add-btn">+ הוסף הכנסה</button>
+                </div>
+
+                <div id="incomeList" class="items-list"></div>
+
+                <div class="total">
+                    <strong>סה"כ הכנסות:</strong>
+                    <span id="totalIncome" class="amount">₪0</span>
+                </div>
+            </section>
+
+            <!-- סעיף הוצאות -->
+            <section class="section expense-section">
+                <div class="section-header">
+                    <h3>הוצאות</h3>
+                    <button id="addExpenseBtn" class="add-btn">+ הוסף הוצאה</button>
+                </div>
+
+                <div id="expenseList" class="items-list"></div>
+
+                <div class="total">
+                    <strong>סה"כ הוצאות:</strong>
+                    <span id="totalExpense" class="amount expense-amount">₪0</span>
+                </div>
+            </section>
+
+            <!-- סיכום -->
+            <section class="summary">
+                <div class="summary-item">
+                    <span>יתרה:</span>
+                    <span id="balance" class="amount balance-amount">₪0</span>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modal להוספת הכנסה/הוצאה -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle"></h3>
+            <form id="itemForm">
+                <div class="form-group">
+                    <label for="itemName">שם:</label>
+                    <input type="text" id="itemName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemAmount">סכום (₪):</label>
+                    <input type="number" id="itemAmount" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemType">סוג:</label>
+                    <select id="itemType" required>
+                        <option value="one-time">חד פעמי</option>
+                        <option value="recurring">קבוע (חוזר כל חודש)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="monthSelectGroup">
+                    <label for="itemMonth">חודש:</label>
+                    <input type="month" id="itemMonth">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">שמור</button>
+                    <button type="button" class="cancel-btn" id="cancelBtn">ביטול</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
