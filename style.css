@@ -440,3 +440,110 @@ header h1 {
     font-size: 3em;
     margin-bottom: 15px;
 }
+
+/* עיצוב תתי-פריטים */
+.sub-items {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    border-right: 3px solid #667eea;
+}
+
+.sub-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    background: white;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.sub-item.completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+.sub-item-name {
+    color: #666;
+    flex: 1;
+}
+
+.sub-item-amount {
+    color: #28a745;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.expense-section .sub-item-amount {
+    color: #dc3545;
+}
+
+/* עיצוב Modal תתי-פריטים */
+.sub-items-list {
+    margin-bottom: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.sub-item-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.sub-item-row input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+.sub-item-row .sub-item-name {
+    flex: 1;
+    font-weight: 600;
+    color: #333;
+}
+
+.sub-item-row .sub-item-amount {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.add-sub-item-form {
+    background: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.add-sub-item-form h4 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* כפתור עריכה */
+.edit-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s;
+}
+
+.edit-btn:hover {
+    background: #5568d3;
+    transform: scale(1.05);
+}
+
+/* badge משתנה */
+.badge-variable {
+    background: #fff3cd;
+    color: #856404;
+}

@@ -78,7 +78,8 @@
                     <label for="itemType">סוג:</label>
                     <select id="itemType" required>
                         <option value="one-time">חד פעמי</option>
-                        <option value="recurring">קבוע (חוזר כל חודש)</option>
+                        <option value="recurring-fixed">קבוע - סכום קבוע</option>
+                        <option value="recurring-variable">קבוע - סכום משתנה</option>
                     </select>
                 </div>
 
@@ -87,11 +88,64 @@
                     <input type="month" id="itemMonth">
                 </div>
 
+                <div class="form-group" id="hasSubItemsGroup" style="display: none;">
+                    <label>
+                        <input type="checkbox" id="hasSubItems">
+                        פריט עם תתי-פריטים (לדוגמה: השכרת דירות)
+                    </label>
+                </div>
+
                 <div class="form-actions">
                     <button type="submit" class="submit-btn">שמור</button>
                     <button type="button" class="cancel-btn" id="cancelBtn">ביטול</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal לניהול תתי-פריטים -->
+    <div id="subItemsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="budgetManager.closeSubItemsModal()">&times;</span>
+            <h3 id="subItemsModalTitle">ניהול תתי-פריטים</h3>
+
+            <div id="subItemsList" class="sub-items-list"></div>
+
+            <div class="add-sub-item-form">
+                <h4>הוסף תת-פריט</h4>
+                <div class="form-group">
+                    <label for="subItemName">שם:</label>
+                    <input type="text" id="subItemName">
+                </div>
+                <div class="form-group">
+                    <label for="subItemAmount">סכום (₪):</label>
+                    <input type="number" id="subItemAmount" step="0.01">
+                </div>
+                <button onclick="budgetManager.addSubItem()" class="submit-btn">הוסף תת-פריט</button>
+            </div>
+
+            <div class="form-actions">
+                <button onclick="budgetManager.saveSubItems()" class="submit-btn">שמור וסגור</button>
+                <button onclick="budgetManager.closeSubItemsModal()" class="cancel-btn">ביטול</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal לעדכון סכום משתנה -->
+    <div id="amountModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="budgetManager.closeAmountModal()">&times;</span>
+            <h3 id="amountModalTitle">עדכן סכום לחודש</h3>
+
+            <div class="form-group">
+                <label id="amountModalLabel"></label>
+                <input type="number" id="monthlyAmount" step="0.01">
+            </div>
+
+            <div class="form-actions">
+                <button onclick="budgetManager.saveMonthlyAmount()" class="submit-btn">שמור</button>
+                <button onclick="budgetManager.closeAmountModal()" class="cancel-btn">ביטול</button>
+            </div>
         </div>
     </div>
 
