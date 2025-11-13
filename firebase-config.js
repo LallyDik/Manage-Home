@@ -7,12 +7,13 @@
 // 4. העתק את נתוני ההגדרה לכאן
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAKSxWT_gSDZyfx_cruazQQGpH_fl6AFVA",
+  authDomain: "manage-home-7e1b7.firebaseapp.com",
+  projectId: "manage-home-7e1b7",
+  storageBucket: "manage-home-7e1b7.firebasestorage.app",
+  messagingSenderId: "757704062374",
+  appId: "1:757704062374:web:17b49008f3acff6bf10b67",
+  measurementId: "G-EPYCX0MK25"
 };
 
 // אתחול Firebase
