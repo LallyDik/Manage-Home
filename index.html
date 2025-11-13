@@ -84,13 +84,21 @@
                     <label for="itemType">סוג:</label>
                     <select id="itemType" required>
                         <option value="one-time">חד פעמי</option>
-                        <option value="recurring">קבוע (חוזר כל חודש)</option>
+                        <option value="recurring-fixed">קבוע - סכום קבוע</option>
+                        <option value="recurring-variable">קבוע - סכום משתנה</option>
                     </select>
                 </div>
 
                 <div class="form-group" id="monthSelectGroup">
                     <label for="itemMonth">חודש:</label>
                     <input type="month" id="itemMonth">
+                </div>
+
+                <div class="form-group" id="hasSubItemsGroup" style="display: none;">
+                    <label>
+                        <input type="checkbox" id="hasSubItems">
+                        פריט עם תתי-פריטים (לדוגמה: השכרת דירות)
+                    </label>
                 </div>
 
                 <div class="form-actions">
