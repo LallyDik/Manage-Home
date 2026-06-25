@@ -239,3 +239,4 @@ service cloud.firestore {
 ---
 
 **נוצר עם ❤️ בעברית**
+ תודה
